@@ -1,2 +1,2 @@
-# -recommender-systems-project1
+# Gitarka siema
 Project 1 -  Recommender systems class
