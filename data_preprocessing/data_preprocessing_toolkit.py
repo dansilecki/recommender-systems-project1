@@ -43,8 +43,8 @@ class DataPreprocessingToolkit(object):
         ########################
         # Write your code here #
         ########################
-        df = df.loc[df['is_company'] == 0]
-        return df
+        chosen_df = df.loc[df['is_company'] == 0]
+        return chosen_df
 
     @staticmethod
     def filter_out_long_stays(df):
@@ -58,8 +58,8 @@ class DataPreprocessingToolkit(object):
         ########################
         # Write your code here #
         ########################
-        df = df.loc[df['length_of_stay'] <= 21]
-        return df
+        chosen_df = df.loc[df['length_of_stay'] <= 21]
+        return chosen_df
 
     @staticmethod
     def filter_out_low_prices(df):
@@ -74,8 +74,8 @@ class DataPreprocessingToolkit(object):
         ########################
         # Write your code here #
         ########################
-        df = df.loc[df['accommodation_price'] > 50]
-        return df
+        chosen_df = df.loc[df['accommodation_price'] > 50]
+        return chosen_df
 
     @staticmethod
     def fix_date_to(df):
