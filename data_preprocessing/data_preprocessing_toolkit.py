@@ -86,6 +86,8 @@ class DataPreprocessingToolkit(object):
         :return: A DataFrame with fixed date_to.
         :rtype: pd.DataFrame
         """
+        df['date_to'] = df['date_to'].apply(lambda x: x + timedelta(days=1))
+        return df
 
     @staticmethod
     def add_length_of_stay(df):
@@ -99,7 +101,7 @@ class DataPreprocessingToolkit(object):
         ########################
         # Write your code here #
         ########################
-        df['length_of_stay'] = (df['date_to'] - df['date_from']).dt.days + 1
+        df['length_of_stay'] = (df['date_to'] - df['date_from']).dt.days
         return df
 
     @staticmethod
