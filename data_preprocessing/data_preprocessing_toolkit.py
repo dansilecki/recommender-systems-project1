@@ -150,6 +150,7 @@ class DataPreprocessingToolkit(object):
         end = df['date_to'].dt.dayofweek
         dt = df['length_of_stay']
         df['weekend_stay'] = (((start >= 4) & (start != 6)) | (end >= 5) | ((end < start) & (start != 6)) | (dt >= 6))
+        df['weekend_stay'] = df['weekend_stay'].map({True: 'True', False: 'False'})
         return df
 
     @staticmethod
@@ -246,6 +247,14 @@ class DataPreprocessingToolkit(object):
         ########################
         # Write your code here #
         ########################
+        df_sum = group_reservations.groupby('group_id')[self.sum_columns].sum()
+        df_mean = group_reservations.groupby('group_id')[self.mean_columns].mean()
+        df_mode = group_reservations.groupby('group_id')[self.mode_columns].agg(lambda x: x.value_counts().index[0])
+        df_first = group_reservations.groupby('group_id')[self.first_columns].first()
+
+        group_reservations = pd.concat([df_sum, df_mean, df_mode, df_first], axis=1)
+        result = pd.concat([non_group_reservations, group_reservations])
+        return result
 
     @staticmethod
     def leave_only_ota(df):
