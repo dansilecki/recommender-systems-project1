@@ -43,6 +43,8 @@ class DataPreprocessingToolkit(object):
         ########################
         # Write your code here #
         ########################
+        df = df.loc[df['is_company'] == 0]
+        return df
 
     @staticmethod
     def filter_out_long_stays(df):
@@ -56,6 +58,8 @@ class DataPreprocessingToolkit(object):
         ########################
         # Write your code here #
         ########################
+        df = df.loc[df['length_of_stay'] <= 21]
+        return df
 
     @staticmethod
     def filter_out_low_prices(df):
@@ -70,6 +74,8 @@ class DataPreprocessingToolkit(object):
         ########################
         # Write your code here #
         ########################
+        df = df.loc[df['accommodation_price'] > 50]
+        return df
 
     @staticmethod
     def fix_date_to(df):
@@ -93,6 +99,8 @@ class DataPreprocessingToolkit(object):
         ########################
         # Write your code here #
         ########################
+        df['length_of_stay'] = (df['date_to'] - df['date_from']).dt.days + 1
+        return df
 
     @staticmethod
     def add_book_to_arrival(df):
@@ -106,6 +114,8 @@ class DataPreprocessingToolkit(object):
         ########################
         # Write your code here #
         ########################
+        df['book_to_arrival'] = (df['date_from'] - df['booking_date']).dt.days
+        return df
 
     @staticmethod
     def add_nrooms(df):
@@ -132,6 +142,15 @@ class DataPreprocessingToolkit(object):
         ########################
         # Write your code here #
         ########################
+        # start - dzień tygodnia w dniu 'date_from', end - dzień tygodnia w dniu 'date_to'
+        # 0 - pon, 1 - wt, ..., 4 - pt, 5 - sb, 6 - nd
+        # dt - długość pobytu (dni)
+
+        start = df['date_from'].dt.dayofweek
+        end = df['date_to'].dt.dayofweek
+        dt = df['length_of_stay']
+        df['weekend_stay'] = (((start >= 4) & (start != 6)) | (end >= 5) | ((end < start) & (start != 6)) | (dt >= 6))
+        return df
 
     @staticmethod
     def add_night_price(df):
@@ -146,6 +165,9 @@ class DataPreprocessingToolkit(object):
         ########################
         # Write your code here #
         ########################
+        df['night_price'] = df['accommodation_price'] / df['length_of_stay'] / df['n_rooms']
+        df['night_price'] = df['night_price'].round(2)
+        return df
 
     @staticmethod
     def clip_book_to_arrival(df):
@@ -171,6 +193,9 @@ class DataPreprocessingToolkit(object):
         ########################
         # Write your code here #
         ########################
+        columns_list = ['n_people', 'n_children_1', 'n_children_2', 'n_children_3']
+        df['n_people'] = df[columns_list].sum(axis=1)
+        return df
 
     @staticmethod
     def leave_one_from_group_reservations(df):
