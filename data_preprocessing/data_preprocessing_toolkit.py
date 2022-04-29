@@ -299,6 +299,10 @@ class DataPreprocessingToolkit(object):
         ########################
         # Write your code here #
         ########################
+        df['room_segment'] = df.groupby('room_group_id')['night_price'].transform('mean')
+        df['room_segment'] = df['room_segment'].apply(
+            lambda x: self.map_value_to_bucket(x, self.room_segment_buckets))
+        return df
 
     def map_npeople_to_npeople_buckets(self, df):
         """
