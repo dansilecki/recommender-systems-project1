@@ -6,7 +6,7 @@ The aim of this project was to create a content-based recommender for real data 
 
 - Daf
 ### Archieved results
-![recommender results in comparison with Amazon Recommender](https://github.com/dansilecki/recommender-systems-project1/main/img/results.png)
+![recommender results in comparison with Amazon Recommender](https://github.com/dansilecki/recommender-systems-project1/tree/main/img/results.PNG?raw=true)
 
 ### Requirements to run jupyters
 1. dad
